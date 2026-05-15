@@ -40,4 +40,5 @@ export interface Testimonial {
   rating: number;
   product: string;
   location: string;
+  image_url?: string | null;
 }

@@ -1,0 +1,383 @@
+@import "tailwindcss";
+
+/* ============================================
+   KEYFRAME ANIMATIONS
+   ============================================ */
+
+@keyframes marquee {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+@keyframes ping {
+  0%   { transform: scale(1); opacity: 0.4; }
+  100% { transform: scale(1.6); opacity: 0; }
+}
+
+/* ============================================
+   DESIGN TOKENS
+   Didefinisikan sebagai CSS custom properties
+   biasa — tidak butuh @theme Tailwind
+   ============================================ */
+
+:root {
+  --font-inter: "Inter", sans-serif;
+  --font-pixel: "VT323", monospace;
+  --color-bg:       #f5f3ff;
+  --color-bg-alt:   #ede9fe;
+  --color-white:    #ffffff;
+  --color-primary:  #6d28d9;
+  --color-accent:   #fde68a;
+  --color-navy:     #1e1b4b;
+  --color-muted:    #4c1d95;
+  --color-lavender: #c4b5fd;
+  --color-wa:       #25d366;
+}
+
+/* ============================================
+   RESET & BASE
+   ============================================ */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  background-color: var(--color-bg);
+  color: var(--color-navy);
+  font-family: var(--font-inter);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================
+   TYPOGRAPHY UTILITIES
+   ============================================ */
+
+.font-pixel {
+  font-family: var(--font-pixel), monospace;
+  letter-spacing: 0.02em;
+}
+
+/* ============================================
+   LAYOUT UTILITIES (reliable fallbacks)
+   ============================================ */
+
+.flex          { display: flex; }
+.inline-flex   { display: inline-flex; }
+.grid          { display: grid; }
+.block         { display: block; }
+.hidden        { display: none; }
+
+.flex-col      { flex-direction: column; }
+.flex-row      { flex-direction: row; }
+.flex-wrap     { flex-wrap: wrap; }
+.flex-1        { flex: 1 1 0%; }
+.flex-shrink-0 { flex-shrink: 0; }
+
+.items-center  { align-items: center; }
+.items-start   { align-items: flex-start; }
+.justify-center  { justify-content: center; }
+.justify-between { justify-content: space-between; }
+.justify-end   { justify-content: flex-end; }
+
+.gap-1   { gap: 0.25rem; }
+.gap-2   { gap: 0.5rem; }
+.gap-3   { gap: 0.75rem; }
+.gap-4   { gap: 1rem; }
+.gap-5   { gap: 1.25rem; }
+.gap-6   { gap: 1.5rem; }
+.gap-8   { gap: 2rem; }
+.gap-10  { gap: 2.5rem; }
+.gap-12  { gap: 3rem; }
+.gap-0\.5 { gap: 0.125rem; }
+.gap-1\.5 { gap: 0.375rem; }
+
+/* Grid columns */
+.grid-cols-1 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+.grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (min-width: 640px) {
+  .sm\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sm\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .sm\:flex-row    { flex-direction: row; }
+  .sm\:px-6        { padding-left: 1.5rem; padding-right: 1.5rem; }
+  .sm\:p-8         { padding: 2rem; }
+}
+
+@media (min-width: 768px) {
+  .md\:flex        { display: flex; }
+  .md\:hidden      { display: none; }
+  .md\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (min-width: 1024px) {
+  .lg\:grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .lg\:grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .lg\:grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .lg\:justify-end { justify-content: flex-end; }
+}
+
+/* ============================================
+   SPACING UTILITIES
+   ============================================ */
+
+.w-full   { width: 100%; }
+.h-full   { height: 100%; }
+.min-h-screen { min-height: 100vh; }
+.max-w-sm  { max-width: 24rem; }
+.max-w-md  { max-width: 28rem; }
+.max-w-3xl { max-width: 48rem; }
+.max-w-6xl { max-width: 72rem; }
+.max-w-7xl { max-width: 80rem; }
+.mx-auto   { margin-left: auto; margin-right: auto; }
+.overflow-hidden  { overflow: hidden; }
+.overflow-x-auto  { overflow-x: auto; }
+.whitespace-nowrap { white-space: nowrap; }
+.select-none { user-select: none; }
+.cursor-pointer { cursor: pointer; }
+.pointer-events-none { pointer-events: none; }
+.break-all   { word-break: break-all; }
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.self-start  { align-self: flex-start; }
+.text-center { text-align: center; }
+.text-left   { text-align: left; }
+.relative    { position: relative; }
+.absolute    { position: absolute; }
+.fixed       { position: fixed; }
+.sticky      { position: sticky; }
+.inset-0     { top: 0; right: 0; bottom: 0; left: 0; }
+.z-50        { z-index: 50; }
+
+/* Padding / margin shorthands */
+.p-2  { padding: 0.5rem; }
+.p-4  { padding: 1rem; }
+.p-5  { padding: 1.25rem; }
+.p-6  { padding: 1.5rem; }
+.p-8  { padding: 2rem; }
+.px-4 { padding-left: 1rem;  padding-right: 1rem; }
+.px-5 { padding-left: 1.25rem; padding-right: 1.25rem; }
+.py-2 { padding-top: 0.5rem; padding-bottom: 0.5rem; }
+.py-2\.5 { padding-top: 0.625rem; padding-bottom: 0.625rem; }
+.py-3 { padding-top: 0.75rem; padding-bottom: 0.75rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-8 { padding-top: 2rem; padding-bottom: 2rem; }
+.py-12 { padding-top: 3rem; padding-bottom: 3rem; }
+.py-16 { padding-top: 4rem; padding-bottom: 4rem; }
+.py-20 { padding-top: 5rem; padding-bottom: 5rem; }
+.pt-1  { padding-top: 0.25rem; }
+.pt-2  { padding-top: 0.5rem; }
+.pb-4  { padding-bottom: 1rem; }
+.mb-2  { margin-bottom: 0.5rem; }
+.mb-4  { margin-bottom: 1rem; }
+.mb-6  { margin-bottom: 1.5rem; }
+.mb-8  { margin-bottom: 2rem; }
+.mb-10 { margin-bottom: 2.5rem; }
+.mb-12 { margin-bottom: 3rem; }
+.mt-1  { margin-top: 0.25rem; }
+.mt-2  { margin-top: 0.5rem; }
+.mt-4  { margin-top: 1rem; }
+.mt-6  { margin-top: 1.5rem; }
+.mt-8  { margin-top: 2rem; }
+.mt-10 { margin-top: 2.5rem; }
+.mt-12 { margin-top: 3rem; }
+
+/* Width / height helpers */
+.w-5   { width: 1.25rem; }
+.w-6   { width: 1.5rem; }
+.w-9   { width: 2.25rem; }
+.w-10  { width: 2.5rem; }
+.w-12  { width: 3rem; }
+.w-14  { width: 3.5rem; }
+.h-0\.5 { height: 0.125rem; }
+.h-5   { height: 1.25rem; }
+.h-9   { height: 2.25rem; }
+.h-10  { height: 2.5rem; }
+.h-14  { height: 3.5rem; }
+.h-16  { height: 4rem; }
+.aspect-square { aspect-ratio: 1 / 1; }
+
+/* Text sizes */
+.text-xs   { font-size: 0.75rem;  line-height: 1rem; }
+.text-sm   { font-size: 0.875rem; line-height: 1.25rem; }
+.text-base { font-size: 1rem;     line-height: 1.5rem; }
+.text-lg   { font-size: 1.125rem; line-height: 1.75rem; }
+.text-xl   { font-size: 1.25rem;  line-height: 1.75rem; }
+.text-2xl  { font-size: 1.5rem;   line-height: 2rem; }
+.text-4xl  { font-size: 2.25rem;  line-height: 2.5rem; }
+.text-6xl  { font-size: 3.75rem;  line-height: 1; }
+.font-semibold { font-weight: 600; }
+.font-bold     { font-weight: 700; }
+.font-medium   { font-weight: 500; }
+.font-mono     { font-family: monospace; }
+.leading-tight    { line-height: 1.25; }
+.leading-relaxed  { line-height: 1.625; }
+.tracking-wide    { letter-spacing: 0.025em; }
+.underline        { text-decoration: underline; }
+.decoration-2     { text-decoration-thickness: 2px; }
+.opacity-10  { opacity: 0.1; }
+.opacity-20  { opacity: 0.2; }
+.opacity-30  { opacity: 0.3; }
+.opacity-80  { opacity: 0.8; }
+.sr-only {
+  position: absolute; width: 1px; height: 1px;
+  padding: 0; margin: -1px; overflow: hidden;
+  clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0;
+}
+.focus\:not-sr-only:focus { position: static; width: auto; height: auto; }
+.resize-vertical { resize: vertical; }
+
+/* Border radius */
+.rounded    { border-radius: 0.25rem; }
+.rounded-lg { border-radius: 0.5rem; }
+.rounded-xl { border-radius: 0.75rem; }
+.rounded-2xl { border-radius: 1rem; }
+.rounded-full { border-radius: 9999px; }
+
+/* Misc transitions */
+.transition-colors     { transition: color 0.15s ease, background-color 0.15s ease; }
+.transition-transform  { transition: transform 0.2s ease; }
+.transition-all        { transition: all 0.2s ease; }
+.rotate-12  { transform: rotate(12deg); }
+.rotate-45  { transform: rotate(45deg); }
+.-rotate-12 { transform: rotate(-12deg); }
+
+/* Object fit */
+.object-cover { object-fit: cover; }
+
+/* Background colors (utility style) */
+.bg-white { background-color: #ffffff; }
+
+/* Accent violet for checkbox */
+.accent-violet-700 { accent-color: #6d28d9; }
+
+/* Hover helpers */
+.hover\:underline:hover { text-decoration: underline; }
+.hover\:text-white:hover { color: #ffffff; }
+
+/* ============================================
+   NEO-BRUTALISM SHADOW EFFECTS
+   ============================================ */
+
+.neo-hover {
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+.neo-hover:hover  { transform: translateY(-4px) translateX(-2px); }
+.neo-hover:active { transform: translateY(2px) translateX(2px); }
+
+/* ============================================
+   BUTTONS
+   ============================================ */
+
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: var(--color-primary); color: #fff;
+  border: 3px solid var(--color-navy);
+  box-shadow: 5px 5px 0px 0px var(--color-navy);
+  font-family: var(--font-pixel), monospace; font-size: 1.3rem; letter-spacing: 0.05em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer; text-decoration: none; border-radius: 8px;
+}
+.btn-primary:hover  { transform: translateY(-3px) translateX(-2px); box-shadow: 8px 8px 0px 0px var(--color-navy); }
+.btn-primary:active { transform: translateY(2px) translateX(2px);   box-shadow: 2px 2px 0px 0px var(--color-navy); }
+
+.btn-secondary {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background-color: var(--color-accent); color: var(--color-navy);
+  border: 3px solid var(--color-navy);
+  box-shadow: 5px 5px 0px 0px var(--color-navy);
+  font-family: var(--font-pixel), monospace; font-size: 1.3rem; letter-spacing: 0.05em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer; text-decoration: none; border-radius: 8px;
+}
+.btn-secondary:hover  { transform: translateY(-3px) translateX(-2px); box-shadow: 8px 8px 0px 0px var(--color-navy); }
+.btn-secondary:active { transform: translateY(2px) translateX(2px);   box-shadow: 2px 2px 0px 0px var(--color-navy); }
+
+.btn-wa {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  padding: 0.65rem 1.25rem; width: 100%;
+  background-color: var(--color-wa); color: #fff;
+  border: 3px solid var(--color-navy);
+  box-shadow: 4px 4px 0px 0px var(--color-navy);
+  font-family: var(--font-pixel), monospace; font-size: 1.15rem; letter-spacing: 0.05em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer; text-decoration: none; border-radius: 8px;
+}
+.btn-wa:hover  { transform: translateY(-3px) translateX(-2px); box-shadow: 7px 7px 0px 0px var(--color-navy); background-color: #22c55e; }
+.btn-wa:active { transform: translateY(2px) translateX(2px);   box-shadow: 1px 1px 0px 0px var(--color-navy); }
+
+/* ============================================
+   PRODUCT CARD
+   ============================================ */
+
+.product-card {
+  background-color: var(--color-white);
+  border: 3px solid var(--color-navy);
+  box-shadow: 6px 6px 0px 0px var(--color-navy);
+  border-radius: 12px; overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex; flex-direction: column;
+}
+.product-card:hover { transform: translateY(-5px) translateX(-2px); box-shadow: 10px 10px 0px 0px var(--color-navy); }
+
+/* ============================================
+   BADGE
+   ============================================ */
+
+.badge {
+  display: inline-flex; align-items: center;
+  padding: 0.2rem 0.75rem;
+  border: 2px solid var(--color-navy);
+  box-shadow: 2px 2px 0px 0px var(--color-navy);
+  font-family: var(--font-pixel), monospace; font-size: 0.9rem; letter-spacing: 0.05em;
+  border-radius: 6px;
+}
+
+/* ============================================
+   PATTERN & DECORATIVE
+   ============================================ */
+
+.pattern-dots {
+  background-image: radial-gradient(var(--color-lavender) 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+.section-divider {
+  height: 4px;
+  background: repeating-linear-gradient(
+    90deg,
+    var(--color-navy) 0px, var(--color-navy) 20px,
+    transparent 20px, transparent 30px
+  );
+}
+
+/* ============================================
+   CUSTOM SCROLLBAR
+   ============================================ */
+
+::-webkit-scrollbar { width: 8px; }
+::-webkit-scrollbar-track { background: var(--color-bg-alt); }
+::-webkit-scrollbar-thumb { background: var(--color-primary); border-radius: 4px; border: 2px solid var(--color-navy); }
+
+/* ============================================
+   TABLE STYLES (Admin)
+   ============================================ */
+
+table { width: 100%; border-collapse: collapse; }
+th, td { text-align: left; }
+
+/* ============================================
+   ANIMATE PING (floating WA button)
+   ============================================ */
+
+.animate-ping {
+  animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+}

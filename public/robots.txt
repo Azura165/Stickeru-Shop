@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin/login
+Disallow: /admin/products/
+Disallow: /admin/settings/
+
+# Sitemap
+Sitemap: https://stickeru.vercel.app/sitemap.xml

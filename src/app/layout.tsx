@@ -17,7 +17,7 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://stickeru.vercel.app"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://stickeru-shop.vercel.app"),
   title: {
     default: "Stickeru | Stiker Custom Anime & Manhwa Premium",
     template: "%s | Stickeru",

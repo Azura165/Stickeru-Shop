@@ -2,8 +2,6 @@ import Navbar from "@/components/Navbar";
 import AnnouncementBanner from "@/components/AnnouncementBanner";
 import HeroSection from "@/components/HeroSection";
 import ProductGrid from "@/components/ProductGrid";
-import PromoBanner from "@/components/PromoBanner";
-import WhyUs from "@/components/WhyUs";
 import HowToOrder from "@/components/HowToOrder";
 import Testimonials from "@/components/Testimonials";
 import FAQ from "@/components/FAQ";
@@ -40,12 +38,8 @@ export default async function HomePage() {
             />
           </section>
         ) : (
-          <>
-            <ProductGrid products={products} waNumber={settings.wa_number} featuredOnly={true} />
-            <PromoBanner />
-          </>
+          <ProductGrid products={products} waNumber={settings.wa_number} featuredOnly={true} />
         )}
-        <WhyUs />
         <HowToOrder />
         <Testimonials />
         <FAQ />

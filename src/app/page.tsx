@@ -16,7 +16,7 @@ export const revalidate = 3600;
 export default async function HomePage() {
   const [settings, supabaseProducts] = await Promise.all([
     getSiteSettings(),
-    getProductsPaginated({ page: 1, limit: 6 }),
+    getProductsPaginated({ page: 1, limit: 8 }),
   ]);
 
   const products = supabaseProducts.products;

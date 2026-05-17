@@ -34,39 +34,54 @@ export async function getAvailableProducts(): Promise<Product[]> {
   return (data as Product[]) ?? [];
 }
 
-export const getProductsPaginated = unstable_cache(async (options: {
+export const getProductsPaginated = async (options: {
   page: number;
   limit: number;
   category?: string;
   search?: string;
 }): Promise<{ products: Product[]; totalCount: number }> => {
-  let query = supabase
-    .from("products")
-    .select("id, name, description, price, image_url, category, is_available, whatsapp_text, created_at", { count: "exact" })
-    .eq("is_available", true);
+  const cacheKey = [
+    "products-paginated",
+    `page-${options.page}`,
+    `limit-${options.limit}`,
+    `cat-${options.category ?? "all"}`,
+    `q-${options.search ?? ""}`,
+  ];
 
-  if (options.category && options.category !== "all" && options.category !== "semua") {
-    query = query.eq("category", options.category);
-  }
+  const fetcher = unstable_cache(
+    async () => {
+      let query = supabase
+        .from("products")
+        .select("id, name, description, price, image_url, category, is_available, whatsapp_text, created_at", { count: "exact" })
+        .eq("is_available", true);
 
-  // Full-text search — filter by name or description
-  if (options.search && options.search.trim()) {
-    query = query.or(`name.ilike.%${options.search.trim()}%,description.ilike.%${options.search.trim()}%`);
-  }
+      if (options.category && options.category !== "all" && options.category !== "semua") {
+        query = query.eq("category", options.category);
+      }
 
-  query = query.order("created_at", { ascending: false });
+      if (options.search && options.search.trim()) {
+        query = query.or(`name.ilike.%${options.search.trim()}%,description.ilike.%${options.search.trim()}%`);
+      }
 
-  const from = (options.page - 1) * options.limit;
-  const to = from + options.limit - 1;
-  query = query.range(from, to);
+      query = query.order("created_at", { ascending: false });
 
-  const { data, count, error } = await query;
-  if (error) {
-    console.error("❌ Error fetching paginated products:", error.message);
-    return { products: [], totalCount: 0 };
-  }
-  return { products: (data as Product[]) ?? [], totalCount: count || 0 };
-}, ["products-paginated"], { revalidate: 3600 });
+      const from = (options.page - 1) * options.limit;
+      const to = from + options.limit - 1;
+      query = query.range(from, to);
+
+      const { data, count, error } = await query;
+      if (error) {
+        console.error("❌ Error fetching paginated products:", error.message);
+        return { products: [] as Product[], totalCount: 0 };
+      }
+      return { products: (data as Product[]) ?? [], totalCount: count || 0 };
+    },
+    cacheKey,
+    { revalidate: 3600 }
+  );
+
+  return fetcher();
+};
 
 // ============================================
 //  REVIEW / TESTIMONIAL FUNCTIONS

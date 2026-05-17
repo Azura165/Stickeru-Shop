@@ -14,7 +14,7 @@ const CATEGORIES: CategoryTab[] = [
   { key: "custom",   label: "Custom",   emoji: "✨" },
 ];
 
-const ITEMS_PER_PAGE = 6;
+const ITEMS_PER_PAGE = 8; // Match server limit
 
 interface ProductGridProps {
   products: Product[];
@@ -134,14 +134,14 @@ export default function ProductGrid({ products, waNumber, featuredOnly = false, 
     return () => mq.removeEventListener("change", handler);
   }, []);
 
-  // If serverPagination is true, products are already paginated and filtered
-  const filtered = featuredOnly 
-    ? products.slice(0, 6) 
-    : (serverPagination ? products : (activeCategory === "all" ? products : products.filter((p) => p.category === activeCategory)));
+  // If serverPagination/featuredOnly: products already filtered & limited server-side, show all
+  const filtered = serverPagination || featuredOnly
+    ? products
+    : (activeCategory === "all" ? products : products.filter((p) => p.category === activeCategory));
 
-  const totalPages = Math.ceil((serverPagination ? products.length : filtered.length) / ITEMS_PER_PAGE);
-  const paginated = featuredOnly || serverPagination
-    ? filtered 
+  const totalPages = Math.ceil(filtered.length / ITEMS_PER_PAGE);
+  const paginated = serverPagination || featuredOnly
+    ? filtered
     : filtered.slice((currentPage - 1) * ITEMS_PER_PAGE, currentPage * ITEMS_PER_PAGE);
 
   const handleCategoryChange = useCallback((key: ProductCategory) => {

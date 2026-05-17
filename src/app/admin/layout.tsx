@@ -16,9 +16,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   // Tentukan background berbeda untuk tiap tombol sesuai request
   const navLinks = [
-    { href: "/admin", label: "📦 PRODUK", bg: "#fde68a", text: "#1e1b4b" }, // Yellow
-    { href: "/admin/reviews", label: "💬 REVIEWS", bg: "#e9d5ff", text: "#1e1b4b" }, // Purple
-    { href: "/admin/settings", label: "⚙️ SETTINGS", bg: "#d1fae5", text: "#065f46" }, // Mint Green
+    { href: "/admin", label: "📦 PRODUK", bg: "#fde68a", text: "#1e1b4b" },
+    { href: "/admin/reviews", label: "💬 REVIEWS", bg: "#e9d5ff", text: "#1e1b4b" },
+    { href: "/admin/users", label: "👥 ADMIN", bg: "#bfdbfe", text: "#1e4080" },
+    { href: "/admin/settings", label: "⚙️ SETTINGS", bg: "#d1fae5", text: "#065f46" },
   ];
 
   return (

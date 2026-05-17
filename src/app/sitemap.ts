@@ -11,6 +11,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${baseUrl}/koleksi`,
+      lastModified: new Date(),
+      changeFrequency: "daily",
+      priority: 0.9,
+    },
+    {
       url: `${baseUrl}/reviews`,
       lastModified: new Date(),
       changeFrequency: "weekly",
@@ -24,3 +30,4 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
   ];
 }
+

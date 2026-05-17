@@ -8,25 +8,19 @@ import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
 import FloatingWAButton from "@/components/FloatingWAButton";
 import CartSidebar from "@/components/CartSidebar";
+import ComingSoonBanner from "@/components/ComingSoonBanner";
 import { getSiteSettings, getProductsPaginated } from "@/lib/supabase";
-import { DUMMY_PRODUCTS } from "@/lib/utils";
 
-/**
- * ISR — Halaman di-cache dan di-revalidate setiap 60 detik.
- * Jadi perubahan produk/settings di admin akan tampil max 60 detik kemudian.
- * Ini jauh lebih cepat daripada SSR murni.
- */
-export const revalidate = 3600; // Cache for 1 hour
+export const revalidate = 3600;
 
 export default async function HomePage() {
-  // Fetch settings & products secara parallel dari Supabase
   const [settings, supabaseProducts] = await Promise.all([
     getSiteSettings(),
     getProductsPaginated({ page: 1, limit: 6 }),
   ]);
 
-  // Fallback ke dummy data kalau Supabase belum ada isinya
-  const products = supabaseProducts.products.length > 0 ? supabaseProducts.products : DUMMY_PRODUCTS;
+  const products = supabaseProducts.products;
+  const isComingSoon = products.length === 0;
 
   return (
     <>
@@ -34,7 +28,18 @@ export default async function HomePage() {
       <Navbar settings={settings} />
       <main id="main-content">
         <HeroSection settings={settings} />
-        <ProductGrid products={products} waNumber={settings.wa_number} featuredOnly={true} />
+        {isComingSoon ? (
+          <section className="px-4 py-12">
+            <ComingSoonBanner
+              message="🎨 Aldo lagi ngegambar stikernya... Stiker premium pertama kami segera hadir!"
+              mode="section"
+              waNumber={settings.wa_number}
+              igLink={settings.ig_link}
+            />
+          </section>
+        ) : (
+          <ProductGrid products={products} waNumber={settings.wa_number} featuredOnly={true} />
+        )}
         <HowToOrder />
         <Testimonials />
         <FAQ />

@@ -34,11 +34,7 @@ export default function CheckoutClient({ waNumber }: { waNumber: string }) {
     items.forEach((item, index) => {
       const itemTotal = item.product.price * item.quantity;
       message += `${index + 1}. ${item.quantity}x *${item.product.name}*\n`;
-      message += `   💰 Harga: ${formatPrice(itemTotal)}\n`;
-      if (item.product.image_url) {
-        message += `   🖼️ Foto: ${item.product.image_url}\n`;
-      }
-      message += `\n`;
+      message += `   Harga: ${formatPrice(itemTotal)}\n\n`;
     });
 
     message += `*💰 TOTAL: ${formatPrice(getTotalPrice())}*`;
@@ -54,6 +50,7 @@ export default function CheckoutClient({ waNumber }: { waNumber: string }) {
     
     window.open(waLink, "_blank");
   };
+
 
 
   return (

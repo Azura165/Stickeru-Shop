@@ -162,10 +162,15 @@ export default function ProductForm({ product }: ProductFormProps) {
 
             {/* Status */}
             <div className="flex items-center gap-3 p-4 rounded-lg" style={{ backgroundColor: "#ede9fe", border: "2px solid #c4b5fd" }}>
-              <input type="hidden" name="is_available" value="false" />
-              <input id="is_available" name="is_available" type="checkbox" value="true"
+              {/* Pakai satu checkbox saja, tanpa hidden input — server baca dari formData.getAll() */}
+              <input
+                id="is_available"
+                name="is_available"
+                type="checkbox"
+                value="true"
                 defaultChecked={product?.is_available ?? true}
-                className="w-5 h-5 accent-violet-700" />
+                className="w-5 h-5 accent-violet-700"
+              />
               <label htmlFor="is_available" className="font-semibold text-sm cursor-pointer" style={{ color: "#1e1b4b" }}>
                 ✅ Tampilkan di halaman toko (is_available)
               </label>

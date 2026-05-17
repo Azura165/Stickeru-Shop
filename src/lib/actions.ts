@@ -110,7 +110,10 @@ export async function createProductAction(formData: FormData) {
       description: formData.get("description") as string,
       price: Number(formData.get("price")),
       category: formData.get("category") as string,
-      is_available: formData.get("is_available") === "true",
+      // Checkbox HTML: kalau DICENTANG → ada di FormData dengan value "true"
+      // Kalau TIDAK DICENTANG → field sama sekali tidak ada di FormData
+      // Jadi pakai .has() bukan .get() === "true"
+      is_available: formData.has("is_available"),
       whatsapp_text: (formData.get("whatsapp_text") as string) || null,
       image_url: uploadedUrl || existingUrl || null,
     };
@@ -120,6 +123,7 @@ export async function createProductAction(formData: FormData) {
     
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/koleksi");
     return { success: true };
   } catch (error: any) {
     return { error: error.message };
@@ -138,7 +142,7 @@ export async function updateProductAction(id: string, formData: FormData) {
       description: formData.get("description") as string,
       price: Number(formData.get("price")),
       category: formData.get("category") as string,
-      is_available: formData.get("is_available") === "true",
+      is_available: formData.has("is_available"),
       whatsapp_text: (formData.get("whatsapp_text") as string) || null,
       // Kalau upload baru, pakai url baru. Kalau tidak, pakai yang lama.
       ...(uploadedUrl ? { image_url: uploadedUrl } : { image_url: existingUrl || null }),
@@ -149,6 +153,7 @@ export async function updateProductAction(id: string, formData: FormData) {
     
     revalidatePath("/");
     revalidatePath("/admin");
+    revalidatePath("/koleksi");
     return { success: true };
   } catch (error: any) {
     return { error: error.message };

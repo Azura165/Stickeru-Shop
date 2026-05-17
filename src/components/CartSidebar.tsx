@@ -131,10 +131,13 @@ export default function CartSidebar() {
                     {item.product.name}
                   </h3>
                   
-                  <div className="flex items-center justify-between mt-1">
-                    <span className="font-pixel text-sm" style={{ color: "#6d28d9" }}>
-                      {formatPrice(item.product.price)}
-                    </span>
+                  <span className="font-pixel text-sm" style={{ color: "#6d28d9" }}>
+                    {formatPrice(item.product.price)}
+                  </span>
+
+                  {/* Qty + Delete Row */}
+                  <div className="flex items-center justify-between mt-2">
+                    {/* Qty Controls */}
                     <div className="flex items-center gap-2">
                       <button 
                         onClick={() => updateQuantity(item.product.id, -1)} 
@@ -153,18 +156,18 @@ export default function CartSidebar() {
                         +
                       </button>
                     </div>
+
+                    {/* Delete Button — terpisah dengan gap yang cukup */}
+                    <button
+                      onClick={() => removeFromCart(item.product.id)}
+                      className="flex items-center gap-1 px-3 py-1.5 rounded-lg cursor-pointer transition-all hover:-translate-y-0.5 text-xs font-semibold"
+                      style={{ backgroundColor: "#fce7f3", border: "2px solid #1e1b4b", color: "#9d174d", boxShadow: "2px 2px 0 0 #1e1b4b" }}
+                      aria-label="Hapus item"
+                    >
+                      🗑️ Hapus
+                    </button>
                   </div>
                 </div>
-
-                {/* Delete Button (Larger & Accessible) */}
-                <button
-                  onClick={() => removeFromCart(item.product.id)}
-                  className="w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 cursor-pointer neo-hover"
-                  style={{ backgroundColor: "#fce7f3", border: "2px solid #1e1b4b", color: "#9d174d" }}
-                  aria-label="Hapus item"
-                >
-                  <span className="text-lg">🗑️</span>
-                </button>
               </div>
             ))
           )}

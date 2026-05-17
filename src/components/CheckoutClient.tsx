@@ -31,24 +31,30 @@ export default function CheckoutClient({ waNumber }: { waNumber: string }) {
 
     let message = `Halo Stickeru! 🎀\nSaya *${buyerName}* mau order:\n\n`;
     
-    items.forEach((item) => {
+    items.forEach((item, index) => {
       const itemTotal = item.product.price * item.quantity;
-      message += `${item.quantity}x ${item.product.name} (${formatPrice(itemTotal)})\n`;
+      message += `${index + 1}. ${item.quantity}x *${item.product.name}*\n`;
+      message += `   💰 Harga: ${formatPrice(itemTotal)}\n`;
+      if (item.product.image_url) {
+        message += `   🖼️ Foto: ${item.product.image_url}\n`;
+      }
+      message += `\n`;
     });
 
-    message += `\n*Total: ${formatPrice(getTotalPrice())}*`;
+    message += `*💰 TOTAL: ${formatPrice(getTotalPrice())}*`;
     
     if (buyerNotes.trim()) {
-      message += `\n\n*Catatan Tambahan:*\n${buyerNotes}`;
+      message += `\n\n*📝 Catatan:*\n${buyerNotes}`;
     }
 
-    message += `\n\nMohon info pembayaran dan pengirimannya ya kak!`;
+    message += `\n\nMohon info pembayaran dan pengirimannya ya kak! 🚀`;
 
     const encodedMessage = encodeURIComponent(message);
     const waLink = `https://wa.me/${waNumber}?text=${encodedMessage}`;
     
     window.open(waLink, "_blank");
   };
+
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: "#f5f3ff", padding: "3rem 1rem" }}>
@@ -91,21 +97,23 @@ export default function CheckoutClient({ waNumber }: { waNumber: string }) {
                         )}
                       </div>
                       <div className="flex-1 min-w-0">
-                        <h3 className="font-pixel text-xl leading-tight truncate" style={{ color: "#1e1b4b" }} title={item.product.name}>{item.product.name}</h3>
-                        <p className="font-bold text-base mt-1" style={{ color: "#6d28d9" }}>{formatPrice(item.product.price)}</p>
+                        <h3 className="font-pixel text-base sm:text-xl leading-tight truncate" style={{ color: "#1e1b4b" }} title={item.product.name}>{item.product.name}</h3>
+                        <p className="font-bold text-sm sm:text-base mt-1" style={{ color: "#6d28d9" }}>{formatPrice(item.product.price)}</p>
                         
-                        <div className="flex items-center justify-between mt-4">
-                          <div className="flex items-center gap-2">
-                            <button onClick={() => updateQuantity(item.product.id, -1)} disabled={item.quantity <= 1} className="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-[#fde68a] border-2 border-[#1e1b4b] disabled:opacity-50 hover:-translate-y-1 transition-transform shadow-[2px_2px_0_0_#1e1b4b]">-</button>
-                            <span className="w-8 text-center font-pixel text-lg">{item.quantity}</span>
-                            <button onClick={() => updateQuantity(item.product.id, 1)} className="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-[#d1fae5] border-2 border-[#1e1b4b] hover:-translate-y-1 transition-transform shadow-[2px_2px_0_0_#1e1b4b]">+</button>
-                          </div>
+                        {/* Qty controls */}
+                        <div className="flex items-center gap-2 mt-3">
+                          <button onClick={() => updateQuantity(item.product.id, -1)} disabled={item.quantity <= 1} className="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-[#fde68a] border-2 border-[#1e1b4b] disabled:opacity-50 hover:-translate-y-1 transition-transform shadow-[2px_2px_0_0_#1e1b4b]">-</button>
+                          <span className="w-8 text-center font-pixel text-lg">{item.quantity}</span>
+                          <button onClick={() => updateQuantity(item.product.id, 1)} className="w-8 h-8 rounded-lg flex items-center justify-center font-bold bg-[#d1fae5] border-2 border-[#1e1b4b] hover:-translate-y-1 transition-transform shadow-[2px_2px_0_0_#1e1b4b]">+</button>
+
+                          {/* Hapus — label teks, tidak mepet */}
                           <button 
                             onClick={() => removeFromCart(item.product.id)} 
-                            className="w-10 h-10 flex items-center justify-center bg-[#fce7f3] border-2 border-[#1e1b4b] rounded-lg shadow-[2px_2px_0_0_#1e1b4b] hover:-translate-y-1 transition-all"
+                            className="ml-auto flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-semibold hover:-translate-y-0.5 transition-all"
+                            style={{ backgroundColor: "#fce7f3", border: "2px solid #1e1b4b", color: "#9d174d", boxShadow: "2px 2px 0 0 #1e1b4b" }}
                             title="Hapus item"
                           >
-                            🗑️
+                            🗑️ Hapus
                           </button>
                         </div>
                       </div>

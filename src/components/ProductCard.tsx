@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { Product } from "@/types";
 import { formatPrice } from "@/lib/utils";
 import { useCartStore } from "@/store/cartStore";
@@ -41,22 +42,25 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
       style={compact ? { boxShadow: "4px 4px 0px 0px #1e1b4b" } : undefined}
     >
       {/* Image Area */}
-      <div
+      <Link
+        href={`/produk/${product.id}`}
         style={{
           position: "relative",
+          display: "block",
           width: "100%",
-          aspectRatio: compact ? "1/1" : "1/1",
+          aspectRatio: "1/1",
           backgroundColor: "#f5f3ff",
           borderBottom: "3px solid #1e1b4b",
           overflow: "hidden",
         }}
+        aria-label={`Lihat detail ${product.name}`}
       >
         {product.image_url ? (
           <Image
             src={product.image_url}
             alt={`Stiker ${product.name}`}
             fill
-            className="object-cover"
+            className="object-cover transition-transform hover:scale-105"
             sizes={compact
               ? "(max-width: 768px) 50vw, 33vw"
               : "(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
@@ -93,7 +97,7 @@ export default function ProductCard({ product, compact = false }: ProductCardPro
             {emoji} {compact ? product.category.slice(0,3).toUpperCase() : product.category.toUpperCase()}
           </span>
         </div>
-      </div>
+      </Link>
 
       {/* Content */}
       <div

@@ -17,6 +17,7 @@ const vt323 = VT323({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://stickeru.vercel.app"),
   title: {
     default: "Stickeru | Stiker Custom Anime & Manhwa Premium",
     template: "%s | Stickeru",
@@ -39,16 +40,27 @@ export const metadata: Metadata = {
     siteName: "Stickeru",
     images: [
       {
-        url: "/og-image.jpg", // Make sure Radithya puts an og-image.jpg in the public folder
+        url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Stickeru Banner",
+        alt: "Stickeru - Stiker Custom Anime & Manhwa Premium",
       },
     ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Stickeru | Stiker Custom Anime & Manhwa Premium",
+    description: "Order stiker custom anime & manhwa favoritmu! Kualitas premium, anti-air, harga terjangkau.",
+    images: ["/og-image.jpg"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+    },
   },
 };
 

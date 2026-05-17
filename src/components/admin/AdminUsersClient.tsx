@@ -108,14 +108,6 @@ export default function AdminUsersClient() {
         </p>
       </div>
 
-      {/* NOTICE: SERVICE_ROLE_KEY */}
-      <div className="bg-[#fde68a] p-5 rounded-2xl" style={{ border: "4px solid #1e1b4b", boxShadow: "6px 6px 0 0 #1e1b4b" }}>
-        <p className="font-bold" style={{ color: "#92400e" }}>
-          ⚠️ <strong>Penting!</strong> Fitur ini butuh <code className="bg-white px-2 py-0.5 rounded">SUPABASE_SERVICE_ROLE_KEY</code> di environment variables.
-          Ambil dari <strong>Supabase Dashboard → Settings → API → service_role key</strong>. 
-          Tambahkan ke file <code className="bg-white px-2 py-0.5 rounded">.env.local</code> dan di Vercel Environment Variables.
-        </p>
-      </div>
 
       {/* SECTION: Daftar Admin */}
       <div className="bg-white rounded-2xl overflow-hidden" style={{ border: "4px solid #1e1b4b", boxShadow: "8px 8px 0 0 #1e1b4b" }}>

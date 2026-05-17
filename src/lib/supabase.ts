@@ -38,6 +38,7 @@ export const getProductsPaginated = unstable_cache(async (options: {
   page: number;
   limit: number;
   category?: string;
+  search?: string;
 }): Promise<{ products: Product[]; totalCount: number }> => {
   let query = supabase
     .from("products")
@@ -46,6 +47,11 @@ export const getProductsPaginated = unstable_cache(async (options: {
 
   if (options.category && options.category !== "all" && options.category !== "semua") {
     query = query.eq("category", options.category);
+  }
+
+  // Full-text search — filter by name or description
+  if (options.search && options.search.trim()) {
+    query = query.or(`name.ilike.%${options.search.trim()}%,description.ilike.%${options.search.trim()}%`);
   }
 
   query = query.order("created_at", { ascending: false });

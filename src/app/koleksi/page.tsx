@@ -8,6 +8,7 @@ import Pagination from "@/components/Pagination";
 import CategoryTabs from "@/components/CategoryTabs";
 import ProductSkeleton from "@/components/ProductSkeleton";
 import ComingSoonBanner from "@/components/ComingSoonBanner";
+import SearchBar from "@/components/SearchBar";
 import { Suspense } from "react";
 
 export const dynamic = 'force-dynamic';
@@ -20,16 +21,17 @@ export default async function KoleksiPage({
   const resolvedParams = await searchParams;
   const page = Number(resolvedParams.page) || 1;
   const category = typeof resolvedParams.category === 'string' ? resolvedParams.category : "all";
-  const limit = 8; // 8 products per page
+  const search = typeof resolvedParams.q === 'string' ? resolvedParams.q : undefined;
+  const limit = 8;
 
   const [settings, { products, totalCount }] = await Promise.all([
     getSiteSettings(),
-    getProductsPaginated({ page, limit, category })
+    getProductsPaginated({ page, limit, category, search })
   ]);
 
   const totalPages = Math.ceil(totalCount / limit);
-  // Kalau semua kategori kosong (bukan filter) = Coming Soon
-  const isGloballyEmpty = totalCount === 0 && category === "all";
+  // Coming Soon: DB benar-benar kosong (bukan hasil filter/search)
+  const isGloballyEmpty = totalCount === 0 && category === "all" && !search;
 
   return (
     <>
@@ -57,7 +59,7 @@ export default async function KoleksiPage({
             />
           ) : (
             <>
-              <div className="flex flex-col items-center text-center mb-10" style={{ gap: "1rem" }}>
+              <div className="flex flex-col items-center text-center mb-6" style={{ gap: "1rem" }}>
                 <span className="font-pixel px-4 py-2 rounded-xl text-sm md:text-base" style={{ backgroundColor: "#c4b5fd", color: "#1e1b4b", border: "3px solid #1e1b4b", boxShadow: "3px 3px 0 0 #1e1b4b" }}>
                   🎀 KOLEKSI LENGKAP
                 </span>
@@ -67,6 +69,11 @@ export default async function KoleksiPage({
                 <p className="text-sm md:text-base mb-2" style={{ color: "#4c1d95", maxWidth: "28rem" }}>
                   Semua stiker dicetak dengan tinta premium, anti-air, dan siap tempel di mana aja!
                 </p>
+                {/* Search Bar */}
+                <Suspense fallback={null}>
+                  <SearchBar />
+                </Suspense>
+                {/* Category Tabs */}
                 <CategoryTabs />
               </div>
               
@@ -82,9 +89,13 @@ export default async function KoleksiPage({
               >
                 {products.length === 0 ? (
                   <div className="w-full bg-white p-12 text-center rounded-2xl my-8" style={{ border: "4px solid #1e1b4b", boxShadow: "8px 8px 0px 0px #1e1b4b" }}>
-                    <span className="text-6xl block mb-4 animate-bounce">🥲</span>
-                    <h3 className="font-pixel text-2xl mb-2" style={{ color: "#1e1b4b" }}>Belum ada stiker di kategori ini</h3>
-                    <p className="font-bold text-lg" style={{ color: "#4c1d95" }}>Coba pilih kategori lain atau cek lagi nanti ya!</p>
+                    <span className="text-6xl block mb-4 animate-bounce">{search ? "🔍" : "🥲"}</span>
+                    <h3 className="font-pixel text-2xl mb-2" style={{ color: "#1e1b4b" }}>
+                      {search ? `Gak nemu stiker "${search}"` : "Belum ada stiker di kategori ini"}
+                    </h3>
+                    <p className="font-bold text-lg" style={{ color: "#4c1d95" }}>
+                      {search ? "Coba kata kunci lain ya!" : "Coba pilih kategori lain atau cek lagi nanti ya!"}
+                    </p>
                   </div>
                 ) : (
                   <ProductGrid products={products} waNumber={settings.wa_number} featuredOnly={false} serverPagination={true} />
